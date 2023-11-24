@@ -1,7 +1,7 @@
 import pygame
 
 WIDTH = 800
-HEIDTH = 800
+HEIGTH = 800
 
 img_berry = pygame.image.load('berry.png')
 img_berry.convert()
@@ -12,7 +12,7 @@ img_bird.convert()
 rect = img_bird.get_rect()
 
 class Bird:
-    def __init__(self, screen: pygame.Surface, x, y):
+    def __init__(self, screen: pygame.Surface, x=WIDTH*0.5, y=HEIGTH*0.5):
         self.screen = screen
         self.x = x
         self.y = y
