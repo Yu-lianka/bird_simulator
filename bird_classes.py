@@ -48,14 +48,14 @@ class Ship:
     def left_ship(self):
         """ Инициализация новых левых шипов. """
         self.live = 1
-        x = self.x = rnd(600, 780)
+        x = self.x = 5
         y = self.y = rnd(300, 550)
         color = self.color = BLACK
 
     def right_ship(self):
         """ Инициализация новых правых шипов. """
         self.live = 1
-        x = self.x = rnd(600, 780)
+        x = self.x = 785
         y = self.y = rnd(5, HEIGTH - 5 , 10)
         color = self.color = BLACK
 
