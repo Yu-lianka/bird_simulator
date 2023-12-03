@@ -1,7 +1,15 @@
+import math
+from random import choice
+
 import pygame
+import random
+import time
+from random import randrange as rnd
 
 WIDTH = 800
 HEIGTH = 800
+
+BLACK = (0, 0, 0)
 
 img_berry = pygame.image.load('berry.png')
 img_berry.convert()
@@ -12,7 +20,7 @@ img_bird.convert()
 rect = img_bird.get_rect()'''
 
 class Bird:
-    def __init__(self, screen: pygame.Surface, x=WIDTH*0.5, y=HEIGHT*0.5):
+    def __init__(self, screen: pygame.Surface, x=WIDTH*0.5, y=HEIGTH*0.5):
         '''Создание птички, загрузка изображения'''
         self.screen = screen
         self.x = x
@@ -66,6 +74,12 @@ class Bird:
             self.f=0
             
         screen.blit(self.BIRD,[self.x-SCALE*1.3*0.5,self.y-SCALE*0.5])
+
+    def eat(self, obj):
+        if (self.x-obj.x)**2+ (self.y-obj.y)**2<(self.r+obj.r)**2:
+            return True
+        else:
+            return False
  
  
 class Ship:
@@ -110,10 +124,27 @@ class Ship:
     def hit(self, points=1):
         """Попадание птички в шип."""
         self.points += points
+
+class Berry:
+    def __init__(self, screen: pygame.Surface):
+        '''Создание птички, загрузка изображения'''
+        self.screen = screen
+        self.x = x = rnd(30, 770)
+        self.y = y = rnd(30, 770)
+        self.live = 1
+        self.f=0
+        self.new_berry()
+
+    def new_berry(self):
+        """ Инициализация новой. """
+        self.live = 1
+        x = self.x = rnd(30, 770)
+        y = self.y = rnd(30, 770)
+
+    def hit(self, points=1):
+        """Съедание ягоды."""
+        self.points += points
+
+
    
-
-
-
-
-
 
