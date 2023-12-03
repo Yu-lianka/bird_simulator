@@ -3,6 +3,8 @@ import random
 import pygame
 import sys
 
+from bird_classes import *
+
 FPS = 30
 YELLOW=(255,168,18)
 BLUE=(24,255,209)
@@ -27,11 +29,12 @@ pygame.display.set_caption("bird_simulator")
 s=0
 
 
+
 finished = False
 
 clock = pygame.time.Clock()
 bird=Bird(screen)
-
+berry=Berry(screen)
 
 while not finished:
     screen.fill(WHITE)
@@ -56,6 +59,16 @@ while not finished:
             s+=1
         elif keys[pygame.K_SPACE]:
             bird.start()
+
+    
+
+        bird.move()
+        if bird.hittest(berry) and berry.live:
+            berry.live = 0
+            berry.hit()
+            berry.new_berry()
+
+    
             
 
 pygame.quit()
