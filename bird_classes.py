@@ -9,7 +9,20 @@ from random import randrange as rnd
 WIDTH = 800
 HEIGTH = 800
 
+FPS = 30
+YELLOW=(255,168,18)
+BLUE=(24,255,209)
+PURPLE=(116,66,200)
+DBLUE=(25,25,112)
+RED=(255,83,73)
 BLACK = (0, 0, 0)
+WHITE=(230,230,250)
+GAME_COLORS=[YELLOW,BLUE,PURPLE,DBLUE,RED]
+SPEED=15
+
+SCALE=100
+
+
 
 img_berry = pygame.image.load('berry.png')
 img_berry.convert()
