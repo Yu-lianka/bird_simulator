@@ -110,14 +110,29 @@ class Ship:
         """ Инициализация новых левых шипов. """
         self.live = 1
         x = self.x = 5
-        y = self.y = rnd(300, 550)
+        y = self.y = rnd(5, HEIGTH - 5 , 10)
         color = self.color = BLACK
 
     def right_ship(self):
         """ Инициализация новых правых шипов. """
         self.live = 1
-        x = self.x = 785
+        x = self.x = 795
         y = self.y = rnd(5, HEIGTH - 5 , 10)
+        color = self.color = BLACK
+
+
+    def up_ship(self):
+        """ Инициализация новых левых шипов. """
+        self.live = 1
+        x = self.x = rnd(5, WIDTH - 5 , 10)
+        y = self.y = 795
+        color = self.color = BLACK
+
+    def down_ship(self):
+        """ Инициализация новых правых шипов. """
+        self.live = 1
+        x = self.x = rnd(5, WIDTH - 5 , 10)
+        y = self.y = 5
         color = self.color = BLACK
 
     def draw_left(self):
@@ -133,6 +148,22 @@ class Ship:
             self.color,
             [(self.x - self.a/(2*math.sqrt(3)), self.y - self.a/2),(self.x + 2 * self.a/(2*math.sqrt(3)), self.y), (self.x - self.a/(2*math.sqrt(3)), self.y + self.a/2 ) ]
         )
+
+    def draw_up(self):
+        pygame.draw.polygon(
+            self.screen,
+            self.color,
+            [(self.x - self.a/2, self.y + self.a/(2*math.sqrt(3))),(self.x, self.y - self.a/math.sqrt(3)), (self.x + self.a/2, self.y + self.a/2 ) ]
+        )
+
+    def draw_down(self):
+        pygame.draw.polygon(
+            self.screen,
+            self.color,
+            [(self.x - self.a/2, self.y - self.a/(2*math.sqrt(3))),(self.x, self.y + self.a/math.sqrt(3)), (self.x + self.a/2, self.y - self.a/2 ) ]
+        )
+
+
 
     def hit(self, points=1):
         """Попадание птички в шип."""
@@ -159,5 +190,5 @@ class Berry:
         self.points += points
 
 
-   
+
 
