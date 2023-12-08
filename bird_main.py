@@ -1,5 +1,5 @@
 import math
-import random
+import random as rnd
 import pygame
 import sys
 
@@ -27,23 +27,71 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("bird_simulator")
 s=0
-
-
+spikes=[]
+spimove=[]
+r = 1
+m=0
 
 finished = False
 
 clock = pygame.time.Clock()
 bird=Bird(screen)
-berry=Berry(screen)
 
+
+                
 while not finished:
     screen.fill(WHITE)
     bird.draw()
+
+    if bird.r==1 and r==1 :
+       
+        spikes=[]
+        spimove=[]
+        if s<=5:
+            n=s
+        else:
+            n=rnd.randint(1,5)
+        for i in range (n):
+            spike=Spike(screen,-5,-80)
+            spikes.append(spike)
+        s+=1
+        r=0
+    elif bird.r==0 and r==0 and s>=1:
+        spikes=[]
+        spimove=[]
+        if s<=5:
+            n=s
+        else:
+            n=rnd.randint(1,5)
+            z=rnd.randint(0,1)
+        for i in range (n):
+            z=rnd.randint(0,1)
+            spike=Spike(screen,805,80)
+            if z==0 or s<=5:
+                spikes.append(spike)
+            elif z==1 and s>5:
+                spimove.append(spike)
+        for j in range (m):
+            spike=Spike(screen,805,80)
+            spimove.append(spike)
+        r=1
+        s+=1
+            
+    for i in spikes:
+        i.draw()
+        i.appear()
+    for j in spimove:
+        j.draw()
+        j.appear()
+        j.move()
+    
     pygame.display.update()
 
-    if s==1:
-        bird.move()
 
+    if s>0:
+        bird.move()
+    
+        
     
 
     clock.tick(FPS)
@@ -55,20 +103,36 @@ while not finished:
             finished = True
 
         elif keys[pygame.K_SPACE] and s==0:
+
             bird.start()
             s+=1
+
         elif keys[pygame.K_SPACE]:
             bird.start()
 
-    
+    for i in spikes:
+        if bird.hittest(i):
+            bird.live=0
+            SPEED=0
+            bird.vx=0
+            bird.vy=30
 
-        bird.move()
-        if bird.hittest(berry) and berry.live:
-            berry.live = 0
-            berry.hit()
-            berry.new_berry()
+    for j in spimove:
+        if bird.hittest(j):
+            bird.live=0
+            SPEED=0
+            bird.vx=0
+            bird.vy=30
 
-    
-            
-
+    if bird.live==0 and bird.y>800:
+        s=0
+        spikes=[]
+        spimove=[]
+        bird.live=1
+        bird.x=WIDTH*0.5
+        bird.y=HEIGHT*0.5
+        bird.draw()
+        SPEED=15
+        
 pygame.quit()
+
