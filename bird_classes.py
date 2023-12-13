@@ -4,21 +4,25 @@ import pygame
 import time
 
 
-WIDTH = 800
-HEIGTH = 800
-
 FPS = 30
 YELLOW=(255,168,18)
-BLUE=(24,255,209)
+BLUE=(178,182,235)
 PURPLE=(116,66,200)
 DBLUE=(25,25,112)
 RED=(255,83,73)
-BLACK = (0, 0, 0)
 WHITE=(230,230,250)
+MYBLUE=(226,224,249)
+
+DGREY=(66,60,99)
+GREY=(162,162,208)
+
 GAME_COLORS=[YELLOW,BLUE,PURPLE,DBLUE,RED]
 SPEED=15
 
-SCALE=100
+SCALE=200
+
+WIDTH = 800
+HEIGHT = 800
 
 
 
@@ -31,7 +35,7 @@ img_bird.convert()
 rect = img_bird.get_rect()'''
 
 class Bird:
-    def __init__(self, screen: pygame.Surface, x=WIDTH*0.5, y=HEIGHT*0.5):
+    def __init__(self, screen: pygame.Surface, bird, x=WIDTH*0.5, y=HEIGHT*0.5):
         '''Создание птички, загрузка изображения'''
         self.screen = screen
         self.x = x
@@ -43,11 +47,10 @@ class Bird:
         self.live=1
         self.r=0
         self.R=SCALE*1.3*0.5
+        self.BIRD=bird
 
-        self.BIRD = pygame.image.load('BIRD_1.png').convert_alpha()
-        self.BIRD=pygame.transform.scale(self.BIRD,(SCALE*1.3,SCALE))
 
-        self.rect = pygame.Rect(self.x, self.y,SCALE*1.3,SCALE)
+
 
     def start(self):
         '''Прыжок: вызывается нажатием пробела или при столкновении со стеной'''
@@ -95,6 +98,17 @@ class Bird:
         else:
             return False
 
+    def hit_bottom (self):
+        '''if (obj.y-obj.a/math.sqrt(3)<self.y+SCALE*0.5 and obj.a>0) or \
+        (obj.y-obj.a/math.sqrt(3)>self.y-SCALE*0.5 and obj.a<0):'''
+        if self.y+SCALE*0.5>HEIGHT-40 or self.y-SCALE*0.5<40:
+            return True
+        else:
+            return False
+
+    #def hit (self):
+        
+
     def draw(self):
         '''Вывод птички на экран + отражение при изменении направления движения'''
         if self.f==1:
@@ -104,21 +118,20 @@ class Bird:
         screen.blit(self.BIRD,[self.x-SCALE*1.3*0.5,self.y-SCALE*0.5])
  
 class Spike:
-    def __init__(self, screen: pygame.Surface,x,a):
-        '''Инициализация шипов'''
+    def __init__(self, screen: pygame.Surface, x,a):
+        '''Иниацилизация шипов'''
         self.screen = screen
         self.x = x
-        self.y =rnd.randint(5,HEIGHT-5)
+        self.y =rnd.randint(64,HEIGHT-64)
         self.a = a
         self.points = 0
         self.live = 1
         self.color = DBLUE
-        vy=rnd.randrange(-1,1)
-        self.vy=5*vy
+        self.vy=5*rnd.uniform(-1,1)
 
         
     def new_spike(self, x):
-        self.y=rnd.randint(5,HEIGHT-5)
+        self.y=rnd.randint(64,HEIGHT-64)
         self.x=x
 
     def move(self):
@@ -131,18 +144,30 @@ class Spike:
             self.vy*=-1
             self.y-=5
 
-        elif self.y - self.a/2<5:
+        elif self.y - abs(self.a)/2<5:
             self.vy*=-1
             self.y+=5
 
     def appear(self):
         '''Появление шипов (выползание из-за стены) '''
         if self.a<0:
-            while self.x<10:
-                self.x+=0.8
+            if self.x<26:
+                self.x+=10
         else:
-            while self.x>790:
-                self.x-=0.8
+            if self.x>790-24:
+                self.x-=10
+
+
+    def draw_down(self,y):
+        self.y=y
+        pygame.draw.polygon(
+            self.screen,
+            self.color,
+            [(self.x - self.a/2, self.y + self.a/(2*math.sqrt(3))),
+             (self.x, self.y - self.a/math.sqrt(3)),
+             (self.x + self.a/2, self.y + self.a/(2*math.sqrt(3))) ]
+        )
+
 
 
     def draw(self):
@@ -156,33 +181,9 @@ class Spike:
              (self.x + self.a/(2*math.sqrt(3)), self.y + self.a/2 ) ]
         )
 
-    def up_spike(self):
-        """ Инициализация новых левых шипов. """
-        self.live = 1
-        x = self.x = rnd(5, WIDTH - 5 , 10)
-        y = self.y = 795
-        color = self.color = DBLUE
-
-    def down_spike(self):
-        """ Инициализация новых правых шипов. """
-        self.live = 1
-        x = self.x = rnd(5, WIDTH - 5 , 10)
-        y = self.y = 5
-        color = self.color = DBLUE
-
-    def draw_up(self):
-        pygame.draw.polygon(
-            self.screen,
-            self.color,
-            [(self.x - self.a/2, self.y + self.a/(2*math.sqrt(3))),(self.x, self.y - self.a/math.sqrt(3)), (self.x + self.a/2, self.y + self.a/2 ) ]
-        )
-
-    def draw_down(self):
-        pygame.draw.polygon(
-            self.screen,
-            self.color,
-            [(self.x - self.a/2, self.y - self.a/(2*math.sqrt(3))),(self.x, self.y + self.a/math.sqrt(3)), (self.x + self.a/2, self.y - self.a/2 ) ]
-        )
+        
+        
+                   
 
     def hit(self, points=1):
         """Попадание птички в шип."""
