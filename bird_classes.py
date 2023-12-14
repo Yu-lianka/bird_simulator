@@ -8,6 +8,7 @@ from bird_const import *
 class Bird:
     def __init__(self, screen: pygame.Surface, bird, x=WIDTH*0.5, y=HEIGHT*0.5):
         '''Создание птички, загрузка изображения'''
+        print(HEIGHT, WIDTH)
         self.screen = screen
         self.x = x
         self.y = y
@@ -17,7 +18,7 @@ class Bird:
         self.f=0
         self.live=1
         self.r=0
-        self.R=SCALE*1.3*0.5
+        self.R=SCALE*1.3*0.25
         self.BIRD=bird
 
     def start(self):
@@ -36,7 +37,7 @@ class Bird:
         self.x += self.vx
         self.vy += g
         
-        if self.x + SCALE*1.3*0.5 > WIDTH-10 and self.live==1:
+        if self.x + SCALE*1.3*0.25 > WIDTH-10 and self.live==1:
             self.ind *=(-1)
             self.vy = -SPEED
             self.x-=10
@@ -44,7 +45,7 @@ class Bird:
             self.r=1
            
             
-        if self.x - SCALE*1.3*0.5 < 0+10 and self.live==1:
+        if self.x - SCALE*1.3*0.25 < 0+10 and self.live==1:
             self.ind *=(-1)
             self.vy = -SPEED
             self.x+=10
@@ -56,15 +57,15 @@ class Bird:
 
         return ((obj.x + obj.a/(2*math.sqrt(3))+60 > self.x-self.R and \
            obj.x + obj.a/(2*math.sqrt(3)) < self.x+self.R and \
-           obj.y+1 > self.y-SCALE*0.5 and \
-           obj.y-1 < self.y+SCALE*0.5 and obj.a<0) or \
+           obj.y+1 > self.y-SCALE*0.25 and \
+           obj.y-1 < self.y+SCALE*0.25 and obj.a<0) or \
            (obj.x - obj.a/(2*math.sqrt(3))+60 > self.x-self.R and \
            obj.x - obj.a/(2*math.sqrt(3)) < self.x+self.R and \
-           obj.y+1 > self.y-SCALE*0.5 and \
-           obj.y-1 < self.y+SCALE*0.5 and obj.a>0))
+           obj.y+1 > self.y-SCALE*0.25 and \
+           obj.y-1 < self.y+SCALE*0.25 and obj.a>0))
 
     def hit_bottom (self):
-        return (self.y+SCALE*0.5>HEIGHT-40 or self.y-SCALE*0.5<40)
+        return (self.y+SCALE*0.25>HEIGHT-40 or self.y-SCALE*0.25<40)
 
     def draw(self):
         '''Вывод птички на экран + отражение при изменении направления движения'''
@@ -72,8 +73,7 @@ class Bird:
             self.BIRD=pygame.transform.flip(self.BIRD,1,0)
             self.f=0
             
-        self.screen.blit(self.BIRD,[self.x-SCALE*1.3*0.5,self.y-SCALE*0.5])
-
+        self.screen.blit(self.BIRD,[self.x-SCALE*1.3*0.25,self.y-SCALE*0.25])
 
         
 
