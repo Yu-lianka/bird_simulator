@@ -2,7 +2,6 @@ import math
 import random as rnd
 import pygame
 import sys
-
 from bird_classes import *
 from bird_const import *
 
@@ -10,13 +9,14 @@ def main():
     global SPEED, SCALE
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    
+
+
     pygame.display.set_caption("bird_simulator")
 
-    BIRD_1 = pygame.image.load('BIRD_1.png').convert_alpha()
+    BIRD_1 = pygame.image.load('pictures/BIRD_1.png').convert_alpha()
     BIRD_1=pygame.transform.scale(BIRD_1,(SCALE*1.3,SCALE))
 
-    BIRD_2 = pygame.image.load('BIRD_2.png').convert_alpha()
+    BIRD_2 = pygame.image.load('pictures/BIRD_2.png').convert_alpha()
     BIRD_2 =pygame.transform.scale(BIRD_2,(SCALE*1.3,SCALE))
     BIRD_2=pygame.transform.flip(BIRD_2,1,0)
 
@@ -78,7 +78,6 @@ def main():
     bird=Bird(screen, BIRD)
                     
     while not finished:
-        
         screen.fill(BACK)
 
         if chosen == True:
@@ -229,5 +228,5 @@ def main():
     pygame.quit()
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     main()

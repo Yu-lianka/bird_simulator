@@ -3,11 +3,7 @@ import random as rnd
 import pygame
 import time
 
-import bird_const *
-
-img_berry = pygame.image.load('berry.png')
-img_berry.convert()
-rect = img_berry.get_rect()
+from bird_const import *
 
 class Bird:
     def __init__(self, screen: pygame.Surface, bird, x=WIDTH*0.5, y=HEIGHT*0.5):
