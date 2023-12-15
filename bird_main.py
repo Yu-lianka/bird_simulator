@@ -193,7 +193,6 @@ def main():
                 back = GREY
              
         if bird.berry_hittest(berry):
-            spikes = []
             k += 1
             berry.x = rnd.randint(100, 700)
             berry.y = rnd.randint(100, 700)
