@@ -199,7 +199,6 @@ def main():
             berry.y = rnd.randint(100, 700)
             
         if bird.berry_hittest(second_berry):
-            spikes = []
             k += 1
             second_berry.x = rnd.randint(100, 700)
             second_berry.y = rnd.randint(100, 700)
