@@ -4,6 +4,8 @@ import pygame
 
 from bird_const import *
 
+      
+
 
 class Bird:
     def __init__(self, screen: pygame.Surface, bird, x=WIDTH * 0.5, y=HEIGHT * 0.5):
@@ -62,6 +64,11 @@ class Bird:
                  obj.x - obj.a / (2 * math.sqrt(3)) < self.x + self.R and 
                  obj.y + 1 > self.y - SCALE * 0.25 and 
                  obj.y - 1 < self.y + SCALE * 0.25 and obj.a > 0))
+        
+    def berry_hittest(self, obj):
+        """проверка столкновения ягоды и птички"""
+        
+        return (self.x - obj.x)**2 + (self.y- obj.y)**2 < (self.R + obj.R)**2
 
     def hit_bottom(self):
         return self.y + SCALE * 0.25 > HEIGHT - 40 or self.y - SCALE * 0.25 < 40
@@ -92,17 +99,7 @@ class Spike:
         self.x = x
 
     def move(self):
-        """Движение шипов по вертикали """
-
-        self.y += self.vy
-
-        if self.y + self.a / 2 > HEIGHT - 5:
-            self.vy *= -1
-            self.y -= 5
-
-        elif self.y - abs(self.a) / 2 < 5:
-            self.vy *= -1
-            self.y += 5
+        pass
 
     def appear(self):
         """Появление шипов (выползание из-за стены) """
@@ -137,24 +134,36 @@ class Spike:
     def hit(self, points=1):
         """Попадание птички в шип."""
         self.points += points
+        
+class Moving_Spike(Spike):
+    def move(self):
+        """Движение шипов по вертикали """
 
+        self.y += self.vy
+
+        if self.y + self.a / 2 > HEIGHT - 5:
+            self.vy *= -1
+            self.y -= 5
+
+        elif self.y - abs(self.a) / 2 < 5:
+            self.vy *= -1
+            self.y += 5
 
 class Berry:
     def __init__(self, screen: pygame.Surface):
-        """Создание птички, загрузка изображения"""
+        """Создание ягоды, загрузка изображения"""
         self.screen = screen
-        self.x = x = rnd.randint(30, 770)
-        self.y = y = rnd.randint(30, 770)
+        self.x = x = rnd.randint(100, 700)
+        self.y = y = rnd.randint(130, 670)
         self.live = 1
-        self.f = 0
-        self.new_berry()
+        self.k = 0 #number of eaten berries
+        self.R = SCALE*0.1
+        self.BERRY = pygame.image.load('pictures/RED_BERRIES.png').convert_alpha()
+        self.BERRY = pygame.transform.scale(self.BERRY, (SCALE*0.5, SCALE*0.5))
+        self.BERRY = pygame.transform.flip(self.BERRY, 1, 0)
+        
+    def draw(self):
+        """draw berry"""
 
-    def new_berry(self):
-        """ Инициализация новой. """
-        self.live = 1
-        x = self.x = rnd.randint(30, 770)
-        y = self.y = rnd.randint(30, 770)
-
-    def hit(self, points=1):
-        """Съедание ягоды."""
-        self.points += points
+        self.screen.blit(self.BERRY, [self.x - SCALE * 1.3 * 0.25, self.y - SCALE * 0.25])
+        
